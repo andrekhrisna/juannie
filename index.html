@@ -3,61 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1B2233">
+<meta name="theme-color" content="#EEF1F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121821" media="(prefers-color-scheme: dark)">
 <title>JuAnNie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#EEF1F0;--card:#FFFFFF;--ink:#1B2233;--soft:#5B6475;--line:#D3D9D7;--plate:#C62839;--mat:#2F4A7A;
-  --num:'Barlow Condensed','Roboto Condensed',sans-serif;--txt:'Barlow','Roboto',system-ui,sans-serif;}
-@media (prefers-color-scheme: dark){:root{--paper:#121821;--card:#1B2330;--ink:#E7EBEF;--soft:#98A2B3;--line:#2B3546;--plate:#E0485A;--mat:#86A7E3;}}
+:root{
+  --paper:#EEF1F0; --card:#FFFFFF; --card-2:#F7F9F8;
+  --ink:#1B2233; --soft:#5B6475; --line:#D9DEDC; --line-2:#E8ECEA;
+
+  /* satu warna per app — bukan dua titik bergantian */
+  --c-timer:#0E8A6A;  --c-timer-bg:#E2F2EC;
+  --c-gym:#C62839;    --c-gym-bg:#FBE6E8;
+  --c-ajar:#2F4A7A;   --c-ajar-bg:#E5EBF4;
+  --c-main:#A86010;   --c-main-bg:#F8EDE0;
+  --c-lampu:#6B4FA8;  --c-lampu-bg:#EDE8F7;
+
+  --num:'Barlow Condensed','Roboto Condensed',sans-serif;
+  --txt:'Barlow','Roboto',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+:root[data-theme="dark"]{
+  --paper:#101620; --card:#1A222E; --card-2:#1F2835;
+  --ink:#E7EBEF; --soft:#97A2B3; --line:#2B3546; --line-2:#242E3D;
+
+  --c-timer:#5CCFAC;  --c-timer-bg:#12352C;
+  --c-gym:#F0707F;    --c-gym-bg:#3A1C21;
+  --c-ajar:#8FB0E8;   --c-ajar-bg:#1C2940;
+  --c-main:#E8B576;   --c-main-bg:#3A2C17;
+  --c-lampu:#B9A2EE;  --c-lampu-bg:#2A2340;
+}
+
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--txt);min-height:100%}
-.wrap{max-width:480px;margin:0 auto;padding:32px 18px 40px}
-h1{font-family:var(--num);font-weight:700;font-size:2.1rem;margin:0 0 4px;letter-spacing:.01em}
-p.sub{color:var(--soft);margin:0 0 24px;font-size:.95rem}
-a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;
-  text-decoration:none;color:var(--ink)}
-a.card h2{font-family:var(--num);font-weight:700;font-size:1.4rem;margin:0 0 4px;display:flex;align-items:center;gap:10px}
-a.card p{margin:0;color:var(--soft);font-size:.92rem;line-height:1.4}
-.dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
-.dot.mat{background:var(--mat)}
-.dot.plate{background:var(--plate)}
-footer{text-align:center;color:var(--soft);font-size:.82rem;margin-top:24px}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100%;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--txt); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease,color .25s ease;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--c-ajar);outline-offset:3px;border-radius:14px}
+
+.wrap{max-width:520px;margin:0 auto;padding:30px 18px 44px}
+
+/* ── Kepala ─────────────────────────────────────────────── */
+.top{display:flex;align-items:flex-start;gap:12px;margin-bottom:26px}
+.head{flex:1;min-width:0}
+h1{
+  font-family:var(--num); font-weight:700;
+  font-size:2.6rem; line-height:1; margin:0;
+  letter-spacing:.005em;
+}
+h1 span{color:var(--c-gym)}          /* "An" yang dipakai berdua */
+.hello{
+  font-family:var(--num); font-weight:600;
+  font-size:1.05rem; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--soft); margin:7px 0 0;
+}
+.sub{color:var(--soft);font-size:.93rem;margin:3px 0 0}
+
+.themebtn{
+  flex:none; width:40px; height:40px; margin-top:2px;
+  display:grid; place-items:center;
+  border:1px solid var(--line); border-radius:13px;
+  background:var(--card); color:var(--soft);
+  cursor:pointer; transition:background .18s ease,color .18s ease,border-radius .3s var(--ease);
+}
+.themebtn:hover{color:var(--ink)}
+.themebtn:active{border-radius:20px}
+
+/* ── Kartu ──────────────────────────────────────────────── */
+.list{display:flex;flex-direction:column;gap:10px}
+
+.card{
+  position:relative; display:flex; align-items:center; gap:14px;
+  background:var(--card); border:1px solid var(--line);
+  border-radius:18px; padding:15px 16px;
+  transition:transform .18s var(--ease), border-color .18s ease,
+             background .18s ease, box-shadow .18s ease;
+  animation:rise .4s var(--ease) backwards;
+}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}}
+.card:hover{
+  background:var(--card-2);
+  border-color:var(--tone);
+  box-shadow:0 4px 14px rgba(27,34,51,.08);
+}
+:root[data-theme="dark"] .card:hover{box-shadow:0 4px 16px rgba(0,0,0,.45)}
+.card:active{transform:scale(.985)}
+
+/* kotak ikon — penanda utama tiap app */
+.mark{
+  flex:none; width:50px; height:50px;
+  display:grid; place-items:center;
+  border-radius:15px;
+  background:var(--tone-bg); color:var(--tone);
+  transition:border-radius .34s var(--ease), transform .34s var(--ease);
+}
+.card:hover .mark{border-radius:22px;transform:rotate(-4deg)}
+.mark svg{width:25px;height:25px;display:block}
+
+.body{flex:1;min-width:0}
+.body h2{
+  font-family:var(--num); font-weight:700;
+  font-size:1.32rem; line-height:1.15; margin:0 0 2px;
+  letter-spacing:.005em;
+}
+.body p{margin:0;color:var(--soft);font-size:.88rem;line-height:1.42}
+
+.go{
+  flex:none; color:var(--line);
+  transition:color .18s ease, transform .22s var(--ease);
+}
+.card:hover .go{color:var(--tone);transform:translateX(3px)}
+
+footer{
+  margin-top:26px; padding-top:18px;
+  border-top:1px solid var(--line-2);
+  text-align:center; color:var(--soft); font-size:.8rem;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition-duration:.001ms !important}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>JuAnNie</h1>
-  <p class="sub">Alat harian JuAn &amp; AnNie.</p>
 
-  <a class="card" href="https://andrekhrisna.github.io/WellnessTimer/">
-    <h2><span class="dot mat"></span>Wellness Timer</h2>
-    <p>Pengingat berdiri, istirahatkan mata, dan minum air setiap 30 menit kerja.</p>
-  </a>
+  <div class="top">
+    <div class="head">
+      <h1>Ju<span>An</span>Nie</h1>
+      <p class="hello" id="hello"></p>
+      <p class="sub">Alat harian JuAn &amp; AnNie.</p>
+    </div>
+    <button class="themebtn" id="themeBtn" aria-label="Ganti tema">
+      <svg id="themeIcon" width="19" height="19" viewBox="0 0 24 24" fill="currentColor"></svg>
+    </button>
+  </div>
 
-  <a class="card" href="https://andrekhrisna.github.io/log-latihan/">
-    <h2><span class="dot plate"></span>Log Latihan</h2>
-    <p>Catat set, beban, dan progres latihan gym / home gym.</p>
-  </a>
+  <div class="list">
 
-  <a class="card" href="https://andrekhrisna.github.io/BelajarNilaiTempat/">
-    <h2><span class="dot mat"></span>Belajar Nilai Tempat</h2>
-    <p>Bahan Ajar Kelas 3 SD Mawari Cabang Banyu Urip 1.</p>
-  </a>
+    <a class="card" style="--tone:var(--c-timer);--tone-bg:var(--c-timer-bg);animation-delay:40ms"
+       href="https://andrekhrisna.github.io/WellnessTimer/">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="13.5" r="8"/><path d="M12 9.5v4l2.6 1.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5v3"/>
+        </svg>
+      </span>
+      <span class="body">
+        <h2>Wellness Timer</h2>
+        <p>Pengingat berdiri, istirahatkan mata, dan minum air setiap 30 menit kerja.</p>
+      </span>
+      <svg class="go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
 
-  <a class="card" href="https://andrekhrisna.github.io/mawari-games/">
-    <h2><span class="dot plate"></span>Mawari Games</h2>
-    <p>Kumpulan permainan Mawari.</p>
-  </a>
+    <a class="card" style="--tone:var(--c-gym);--tone-bg:var(--c-gym-bg);animation-delay:80ms"
+       href="https://andrekhrisna.github.io/log-latihan/">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 9.5v5M6 7v10M18 7v10M21 9.5v5M6 12h12"/>
+        </svg>
+      </span>
+      <span class="body">
+        <h2>Log Latihan</h2>
+        <p>Catat set, beban, dan progres latihan gym / home gym.</p>
+      </span>
+      <svg class="go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
 
-  <a class="card" href="https://andrekhrisna.github.io/ilumi-controller/">
-    <h2><span class="dot mat"></span>Ilumi Controller</h2>
-    <p>Pengendali iLumi Smart Bulb.</p>
-  </a>
+    <a class="card" style="--tone:var(--c-ajar);--tone-bg:var(--c-ajar-bg);animation-delay:120ms"
+       href="https://andrekhrisna.github.io/BelajarNilaiTempat/">
+      <span class="mark">
+        <!-- blok basis sepuluh: ratusan, puluhan, satuan -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2.6" y="5" width="9.4" height="9.4" rx="1.1"/>
+          <path d="M2.6 8.1h9.4M2.6 11.3h9.4M5.7 5v9.4M8.9 5v9.4" stroke-width="1"/>
+          <rect x="14.6" y="5" width="3.1" height="9.4" rx="1"/>
+          <path d="M14.6 8.1h3.1M14.6 11.3h3.1" stroke-width="1"/>
+          <rect x="20.2" y="11.3" width="3.1" height="3.1" rx="1"/>
+        </svg>
+      </span>
+      <span class="body">
+        <h2>Belajar Nilai Tempat</h2>
+        <p>Bahan ajar Kelas 3 SD Mawari Cabang Banyu Urip 1.</p>
+      </span>
+      <svg class="go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
+
+    <a class="card" style="--tone:var(--c-main);--tone-bg:var(--c-main-bg);animation-delay:160ms"
+       href="https://andrekhrisna.github.io/mawari-games/">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.2"/>
+          <circle cx="8.4" cy="8.4" r="1.25" fill="currentColor" stroke="none"/>
+          <circle cx="15.6" cy="8.4" r="1.25" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/>
+          <circle cx="8.4" cy="15.6" r="1.25" fill="currentColor" stroke="none"/>
+          <circle cx="15.6" cy="15.6" r="1.25" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <span class="body">
+        <h2>Mawari Games</h2>
+        <p>Kumpulan permainan Mawari.</p>
+      </span>
+      <svg class="go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
+
+    <a class="card" style="--tone:var(--c-lampu);--tone-bg:var(--c-lampu-bg);animation-delay:200ms"
+       href="https://andrekhrisna.github.io/ilumi-controller/">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9.3 17.4h5.4M10.3 20.5h3.4"/>
+          <path d="M12 2.8a6.3 6.3 0 0 0-3.7 11.4c.5.4.8 1 .8 1.6v.3h5.8v-.3c0-.6.3-1.2.8-1.6A6.3 6.3 0 0 0 12 2.8z"/>
+        </svg>
+      </span>
+      <span class="body">
+        <h2>Ilumi Controller</h2>
+        <p>Pengendali iLumi Smart Bulb.</p>
+      </span>
+      <svg class="go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
+
+  </div>
 
   <footer>Masing-masing app menyimpan datanya sendiri di HP ini.</footer>
 </div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var ICON = {
+    moon:'<path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-5.4-5.4 5.39 5.39 0 0 1 2.26-4.4A9.5 9.5 0 0 0 12 3"/>',
+    sun:'<path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10m0-5 2.4 2.4L12 6.8 9.6 4.4zm0 15.2 2.4 2.4L12 22l-2.4-2.6zM4.4 12 2 9.6 4.4 7.2 6.8 9.6zm12.8 0 2.4-2.4L22 12l-2.4 2.4z"/>'
+  };
+
+  function simpan(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function baca(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  var tema = baca('juannie-tema');
+  if (tema !== 'dark' && tema !== 'light') {
+    tema = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function pasang() {
+    root.setAttribute('data-theme', tema);
+    document.getElementById('themeIcon').innerHTML = tema === 'dark' ? ICON.sun : ICON.moon;
+  }
+
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    tema = tema === 'dark' ? 'light' : 'dark';
+    simpan('juannie-tema', tema);
+    pasang();
+  });
+
+  // Sapaan ikut jam di perangkat.
+  var j = new Date().getHours();
+  document.getElementById('hello').textContent =
+    j < 11 ? 'Selamat pagi' : j < 15 ? 'Selamat siang' : j < 19 ? 'Selamat sore' : 'Selamat malam';
+
+  pasang();
+})();
+</script>
 </body>
 </html>
